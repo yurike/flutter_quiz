@@ -9,9 +9,10 @@ class ResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Result'),
+        child: Text(
+            'Result: ${questionsController.correctAnswers} of ${questionsController.questions.length}'),
       ),
     );
   }

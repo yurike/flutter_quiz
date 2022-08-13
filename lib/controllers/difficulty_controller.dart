@@ -12,4 +12,9 @@ class DifficultyController extends GetxController
   void setSelected(String? value) {
     selected.value = value;
   }
+
+  @override
+  bool isSelected() {
+    return selected.isNotEmpty != null && selected.isNotEmpty!;
+  }
 }

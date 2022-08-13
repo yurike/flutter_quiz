@@ -5,65 +5,54 @@ import 'package:flutter_quiz/models/question.dart';
 import 'package:get/get.dart';
 
 class QuestionsController extends GetxController {
-  RxList<Question> questions = <Question>[].obs;
-  var currentQuestion = 0.obs;
-  var currentAnswer = "".obs;
-  var answers = [].obs;
-  var quizFinished = false.obs;
+  final questions = <Question>[].obs;
+  final currentQuestion = 0.obs;
+  final answers = [].obs;
+  final quizFinished = false.obs;
+  var correctAnswers = 0.obs;
 
-  void saveAnswer() {
+  void saveAnswer(String answerKey) {
+    final question = questions[currentQuestion.value];
+    final bool correct =
+        question.correct_answers['${answerKey}_correct'] == 'true';
+    if (correct) correctAnswers++;
     answers.add({
-      "id": questions[currentQuestion.value].id,
-      "answer": currentAnswer.value
+      "question": question.question,
+      "answer": question.answers[answerKey],
+      "correct": correct,
     });
-    if (currentQuestion.value == questions.length - 1)
+    if (currentQuestion.value == questions.length - 1) {
       saveAnswers();
-    else
+      Get.toNamed("/results");
+    } else {
       currentQuestion.value++;
+    }
   }
 
   void getQuestions(String? category, String? difficulty) async {
-    if (category.isNull) {
-      await setFakeQuestions();
-    } else {
-      try {
-        var response = await Dio().get(
-          'https://quizapi.io/api/v1/questions',
-          queryParameters: {
-            'limit': 3,
-            'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
-            'category': category,
-            'difficulty': difficulty,
-          },
-        );
-        print(response.data.toString());
-        //final data = jsonDecode(response.data);
-        questions.value =
-            response.data.map((e) => Question.fromJson(e)).toList();
-        // for (Map<String, dynamic> q in response.data) {
-        //   questions.add(Question(
-        //     id: q["id"],
-        //     question: q["question"],
-        //     description: q['description'],
-        //     multiple_correct_answers: q["multiple_correct_answers"] == 'true',
-        //     answers: q["answers"],
-        //     correct_answers: q['correct_answers'],
-        //     explanation: q['explanation'],
-        //     category: q['category'],
-        //     difficulty: q['difficulty'],
-        //   ));
-        // }
-      } on DioError catch (e) {
-        print("DioError...");
-        if (e.response != null) {
-          print(e.response?.data);
-          //print(e.response?.headers)
-          //print(e.response?.requestOptions)
-        } else {
-          //print(e.requestOptions);
-          print(e.message);
-        }
-        setFakeQuestions();
+    try {
+      var response = await Dio().get(
+        'https://quizapi.io/api/v1/questions',
+        queryParameters: {
+          'limit': 10,
+          'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
+          'category': category,
+          'difficulty': difficulty,
+        },
+      );
+      //print(response.data.toString());
+      for (Map<String, dynamic> q in response.data) {
+        questions.add(Question.fromJson(q));
+      }
+    } on DioError catch (e) {
+      print("DioError...");
+      if (e.response != null) {
+        print(e.response?.data);
+        //print(e.response?.headers)
+        //print(e.response?.requestOptions)
+      } else {
+        //print(e.requestOptions);
+        print(e.message);
       }
     }
   }
@@ -84,7 +73,6 @@ class QuestionsController extends GetxController {
         difficulty: q['difficulty'],
       ));
     }
-    //questions.value = data.map((e) => Question.fromJson(e));
     print("done fake");
   }
 

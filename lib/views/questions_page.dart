@@ -18,10 +18,13 @@ class QuestionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     questionsController.getQuestions(
         categoryController.selected.value, difficultyController.selected.value);
-    //String? answer; // TODO to controller?
+
     return Scaffold(
       body: Center(
-        child: buildQuestion(),
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: buildQuestion(),
+        ),
       ),
     );
   }
@@ -37,11 +40,11 @@ class QuestionsPage extends StatelessWidget {
       List<Widget> answerTiles = question.answers.entries.map((answer) {
         if (!(answer.value.runtimeType == Null)) {
           return RadioListTile<String>(
-            title: Text(answer.value!),
-            value: answer.value!,
-            groupValue: questionsController.currentAnswer.value,
+            title: Text(answer.value),
+            value: answer.value,
+            groupValue: question.question,
             onChanged: (String? value) {
-              questionsController.currentAnswer.value = value!;
+              questionsController.saveAnswer(answer.key);
             },
           );
         } else {
@@ -50,19 +53,15 @@ class QuestionsPage extends StatelessWidget {
       }).toList();
       return Column(
         children: <Widget>[
+          Text(
+            'Question ${qIndex + 1} of ${questionsController.questions.length}',
+          ),
           Text(question.question),
           const Divider(
             height: 10,
           ),
           Column(
             children: answerTiles,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              questionsController.saveAnswer();
-              if (lastQuestion) Get.toNamed('/results');
-            },
-            child: Text(lastQuestion ? "Submit answer" : "Finish quiz"),
           ),
         ],
       );

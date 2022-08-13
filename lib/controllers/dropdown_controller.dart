@@ -5,5 +5,6 @@ abstract class DropdownController extends GetxController {
   final options = [].obs;
 
   void getOptions();
-  void setSelected(String? value) {}
+  void setSelected(String? value);
+  bool isSelected();
 }

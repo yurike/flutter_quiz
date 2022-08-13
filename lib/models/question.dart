@@ -1,11 +1,11 @@
 class Question {
   int id;
   String question;
-  String description;
-  Map<String, String?> answers;
+  String? description;
+  Map answers;
   bool multiple_correct_answers;
   Map correct_answers;
-  String explanation;
+  String? explanation;
   String category;
   String difficulty;
 
@@ -26,16 +26,9 @@ class Question {
         question = json['question'],
         description = json['description'],
         answers = json['answers'],
-        multiple_correct_answers = json['multiple_correct_answers'],
+        multiple_correct_answers = json['multiple_correct_answers'] == 'true',
         correct_answers = json['correct_answers'],
         explanation = json['explanation'],
         category = json['category'],
         difficulty = json['difficulty'];
-
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'id': id,
-  //   };
-  // }
-
 }
