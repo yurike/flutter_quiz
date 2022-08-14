@@ -11,8 +11,26 @@ class ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(
-            'Result: ${questionsController.correctAnswers} of ${questionsController.questions.length}'),
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text(
+                "Результат",
+                style: TextStyle(fontSize: 25),
+              ),
+              Text(
+                '${questionsController.correctAnswers} '
+                'of ${questionsController.questions.length}',
+              ),
+              ElevatedButton(
+                onPressed: () => questionsController.saveResults(),
+                child: const Text("Сохранить результат"),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

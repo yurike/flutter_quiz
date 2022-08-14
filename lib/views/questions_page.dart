@@ -7,8 +7,8 @@ import '../controllers/difficulty_controller.dart';
 import '../controllers/questions_controller.dart';
 
 class QuestionsPage extends StatelessWidget {
-  final CategoryController categoryController = Get.find();
-  final DifficultyController difficultyController = Get.find();
+  //final CategoryController categoryController = Get.find();
+  //final DifficultyController difficultyController = Get.find();
   final QuestionsController questionsController =
       Get.put(QuestionsController());
 
@@ -16,8 +16,7 @@ class QuestionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    questionsController.getQuestions(
-        categoryController.selected.value, difficultyController.selected.value);
+    questionsController.getQuestions();
 
     return Scaffold(
       body: Center(
@@ -56,10 +55,12 @@ class QuestionsPage extends StatelessWidget {
           Text(
             'Question ${qIndex + 1} of ${questionsController.questions.length}',
           ),
-          Text(question.question),
-          const Divider(
-            height: 10,
+          const Divider(height: 10),
+          Text(
+            question.question,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
+          const Divider(height: 10),
           Column(
             children: answerTiles,
           ),
