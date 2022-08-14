@@ -13,9 +13,6 @@ class CategoryController extends GetxController implements DropdownController {
     "Networking",
     "Python",
     "Cloud",
-    "Docker",
-    "Kubernetes",
-    "DevOps",
   ].obs;
 
   void getOptions() async {

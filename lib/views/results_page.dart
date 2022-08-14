@@ -22,16 +22,33 @@ class ResultPage extends StatelessWidget {
               ),
               Text(
                 '${questionsController.correctAnswers} '
-                'of ${questionsController.questions.length}',
+                'из ${questionsController.questions.length}',
               ),
-              ElevatedButton(
-                onPressed: () => questionsController.saveResults(),
-                child: const Text("Сохранить результат"),
-              ),
+              buildButton(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Obx buildButton() {
+    return Obx(
+      () {
+        switch (questionsController.savedResult.value) {
+          case '':
+            return ElevatedButton(
+              onPressed: () => questionsController.saveResults(),
+              child: const Text("Сохранить результат"),
+            );
+            break;
+          case 'saving...':
+            return const CircularProgressIndicator();
+            break;
+          default:
+            return Text(questionsController.savedResult.value);
+        }
+      },
     );
   }
 }

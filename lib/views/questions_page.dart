@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quiz/models/question.dart';
 import 'package:get/get.dart';
 
-import '../controllers/category_controller.dart';
-import '../controllers/difficulty_controller.dart';
 import '../controllers/questions_controller.dart';
 
 class QuestionsPage extends StatelessWidget {
-  //final CategoryController categoryController = Get.find();
-  //final DifficultyController difficultyController = Get.find();
   final QuestionsController questionsController =
       Get.put(QuestionsController());
 
@@ -35,9 +31,9 @@ class QuestionsPage extends StatelessWidget {
       }
       int qIndex = questionsController.currentQuestion.value;
       Question question = questionsController.questions[qIndex];
-      bool lastQuestion = (qIndex == questionsController.questions.length - 1);
+      //bool lastQuestion = (qIndex == questionsController.questions.length - 1);
       List<Widget> answerTiles = question.answers.entries.map((answer) {
-        if (!(answer.value.runtimeType == Null)) {
+        if (answer.value != null) {
           return RadioListTile<String>(
             title: Text(answer.value),
             value: answer.value,
@@ -51,9 +47,10 @@ class QuestionsPage extends StatelessWidget {
         }
       }).toList();
       return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Text(
-            'Question ${qIndex + 1} of ${questionsController.questions.length}',
+            '${question.category} question ${qIndex + 1} of ${questionsController.questions.length}',
           ),
           const Divider(height: 10),
           Text(

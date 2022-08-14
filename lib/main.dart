@@ -1,13 +1,19 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/views/questions_page.dart';
-import 'package:flutter_quiz/views/results_page.dart';
+import 'package:flutter_quiz/firebase_options.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+import 'views/questions_page.dart';
+import 'views/results_page.dart';
 import 'views/start_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 

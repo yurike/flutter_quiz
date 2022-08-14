@@ -30,14 +30,16 @@ class StartPage extends StatelessWidget {
   }
 
   Obx buildButton() {
-    return Obx(() =>
-        (categoryController.isSelected() && difficultyController.isSelected())
-            ? ElevatedButton(
-                key: const Key("startButton"),
-                onPressed: () => Get.toNamed("/questions"),
-                child: const Text("Начать"),
-              )
-            : const Text("Выберите, чтобы начать"));
+    return Obx(
+      () {
+        final isActive = categoryController.isSelected() &&
+            difficultyController.isSelected();
+        return ElevatedButton(
+          onPressed: isActive ? () => Get.toNamed("/questions") : null,
+          child: const Text("Начать"),
+        );
+      },
+    );
   }
 
   Widget buildDropdown(String hint, DropdownController controller) {

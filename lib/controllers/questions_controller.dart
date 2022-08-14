@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_quiz/models/question.dart';
 import 'package:get/get.dart';
@@ -11,8 +10,8 @@ class QuestionsController extends GetxController {
   final questions = <Question>[].obs;
   final currentQuestion = 0.obs;
   final answers = [].obs;
-  //final quizFinished = false.obs;
   var correctAnswers = 0.obs;
+  final savedResult = "".obs;
 
   final CategoryController categoryController = Get.find();
   final DifficultyController difficultyController = Get.find();
@@ -28,7 +27,6 @@ class QuestionsController extends GetxController {
       "correct": correct,
     });
     if (currentQuestion.value == questions.length - 1) {
-      //saveAnswers();
       Get.toNamed("/results");
     } else {
       currentQuestion.value++;
@@ -40,7 +38,7 @@ class QuestionsController extends GetxController {
       var response = await Dio().get(
         'https://quizapi.io/api/v1/questions',
         queryParameters: {
-          'limit': 3,
+          'limit': 10,
           'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
           'category': categoryController.selected.value,
           'difficulty': difficultyController.selected.value,
@@ -65,6 +63,18 @@ class QuestionsController extends GetxController {
 
   void saveResults() {
     print("Saving Results");
-    // TODO implement saving to FireStorage
+    savedResult.value = 'saving...';
+    final db = FirebaseFirestore.instance;
+    final result = <String, dynamic>{
+      "time": Timestamp.now(),
+      "category": categoryController.selected.value,
+      "difficulty": difficultyController.selected.value,
+      "correct": correctAnswers.value,
+      "incorrect": questions.length - correctAnswers.value,
+    };
+    db.collection("results").add(result).then((DocumentReference doc) {
+      savedResult.value = "Saved with ID: ${doc.id}";
+      print('Saved with ID: ${doc.id}');
+    });
   }
 }
