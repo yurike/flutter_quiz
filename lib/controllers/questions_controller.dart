@@ -35,14 +35,20 @@ class QuestionsController extends GetxController {
 
   void getQuestions() async {
     try {
+      final Map<String, dynamic> parameters = {
+        'limit': 10,
+        'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
+      };
+      if (categoryController.isSelected()) {
+        parameters["category"] = categoryController.selected.value;
+      }
+      if (categoryController.isSelected()) {
+        parameters["difficulty"] = difficultyController.selected.value;
+      }
+
       var response = await Dio().get(
         'https://quizapi.io/api/v1/questions',
-        queryParameters: {
-          'limit': 10,
-          'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
-          'category': categoryController.selected.value,
-          'difficulty': difficultyController.selected.value,
-        },
+        queryParameters: parameters,
       );
       //print(response.data);
       for (Map<String, dynamic> q in response.data) {
@@ -62,7 +68,6 @@ class QuestionsController extends GetxController {
   }
 
   void saveResults() {
-    print("Saving Results");
     savedResult.value = 'saving...';
     final db = FirebaseFirestore.instance;
     final result = <String, dynamic>{
@@ -74,7 +79,6 @@ class QuestionsController extends GetxController {
     };
     db.collection("results").add(result).then((DocumentReference doc) {
       savedResult.value = "Saved with ID: ${doc.id}";
-      print('Saved with ID: ${doc.id}');
     });
   }
 }

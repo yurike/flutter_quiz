@@ -8,11 +8,12 @@ class CategoryController extends GetxController implements DropdownController {
 
   @override
   final options = [
-    "DevOps",
     "Linux",
-    "Networking",
-    "Python",
-    "Cloud",
+    "CMS",
+    "Docker",
+    "Code",
+    "SQL",
+    "DevOps",
   ].obs;
 
   void getOptions() async {

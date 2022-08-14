@@ -47,11 +47,10 @@ class QuestionsPage extends StatelessWidget {
         }
       }).toList();
       return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(
-            '${question.category} question ${qIndex + 1} of ${questionsController.questions.length}',
-          ),
+              'Question ${qIndex + 1} of ${questionsController.questions.length}:'),
           const Divider(height: 10),
           Text(
             question.question,

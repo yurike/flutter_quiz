@@ -20,25 +20,15 @@ class StartPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildDropdown("Select category", categoryController),
-            buildDropdown("Select difficulty", difficultyController),
-            buildButton(),
+            buildDropdown("Выберите категорию", categoryController),
+            buildDropdown("Выберите сложность", difficultyController),
+            ElevatedButton(
+              onPressed: () => Get.toNamed("/questions"),
+              child: const Text("Начать"),
+            )
           ],
         ),
       ),
-    );
-  }
-
-  Obx buildButton() {
-    return Obx(
-      () {
-        final isActive = categoryController.isSelected() &&
-            difficultyController.isSelected();
-        return ElevatedButton(
-          onPressed: isActive ? () => Get.toNamed("/questions") : null,
-          child: const Text("Начать"),
-        );
-      },
     );
   }
 
