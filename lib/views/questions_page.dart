@@ -5,33 +5,29 @@ import 'package:get/get.dart';
 import '../controllers/questions_controller.dart';
 
 class QuestionsPage extends StatelessWidget {
-  final QuestionsController questionsController =
-      Get.put(QuestionsController());
+  final QuestionsController controller = Get.put(QuestionsController());
 
   QuestionsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    questionsController.getQuestions();
+    controller.getQuestions();
 
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: buildQuestion(),
-        ),
+        child: buildQuestion(),
       ),
     );
   }
 
   Widget buildQuestion() {
     return Obx(() {
-      if (questionsController.questions.isEmpty) {
+      if (controller.questions.isEmpty) {
         return const CircularProgressIndicator();
       }
-      int qIndex = questionsController.currentQuestion.value;
-      Question question = questionsController.questions[qIndex];
-      //bool lastQuestion = (qIndex == questionsController.questions.length - 1);
+      int qIndex = controller.currentQuestion.value;
+      Question question = controller.questions[qIndex];
+
       List<Widget> answerTiles = question.answers.entries.map((answer) {
         if (answer.value != null) {
           return RadioListTile<String>(
@@ -39,18 +35,20 @@ class QuestionsPage extends StatelessWidget {
             value: answer.value,
             groupValue: question.question,
             onChanged: (String? value) {
-              questionsController.saveAnswer(answer.key);
+              controller.saveAnswer(answer.key);
             },
           );
         } else {
-          return const Text("");
+          return const SizedBox.shrink();
         }
       }).toList();
+
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Text(
-              'Question ${qIndex + 1} of ${questionsController.questions.length}:'),
+            'Question ${qIndex + 1} of ${controller.questions.length}:',
+          ),
           const Divider(height: 10),
           Text(
             question.question,
