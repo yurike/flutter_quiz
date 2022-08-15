@@ -15,7 +15,10 @@ class QuestionsPage extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: buildQuestion(),
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: buildQuestion(),
+        ),
       ),
     );
   }
