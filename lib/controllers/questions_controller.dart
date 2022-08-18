@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_quiz/models/question.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +20,7 @@ class QuestionsController extends GetxController {
   void saveAnswer(String answerKey) {
     final question = questions[currentQuestion.value];
     final bool correct =
-        question.correct_answers['${answerKey}_correct'] == 'true';
+        question.correctAnswers['${answerKey}_correct'] == 'true';
     if (correct) correctAnswers++;
     answers.add({
       "question": question.question,
@@ -55,14 +56,15 @@ class QuestionsController extends GetxController {
         questions.add(Question.fromJson(q));
       }
     } on DioError catch (e) {
-      print("DioError...");
-      if (e.response != null) {
-        print(e.response?.data);
-        //print(e.response?.headers)
-        //print(e.response?.requestOptions)
-      } else {
-        //print(e.requestOptions);
-        print(e.message);
+      if (kDebugMode) {
+        if (e.response != null) {
+          print('DioError. responce.data: ${e.response?.data}');
+          print(e.response?.headers);
+          print(e.response?.requestOptions);
+        } else {
+          print(e.requestOptions);
+          print(e.message);
+        }
       }
     }
   }

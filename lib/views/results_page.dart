@@ -41,10 +41,8 @@ class ResultPage extends StatelessWidget {
               onPressed: () => questionsController.saveResults(),
               child: const Text("Сохранить результат"),
             );
-            break;
           case 'saving...':
             return const CircularProgressIndicator();
-            break;
           default:
             return Text(questionsController.savedResult.value);
         }
