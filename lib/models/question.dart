@@ -3,8 +3,8 @@ class Question {
   String question;
   String? description;
   Map answers;
-  bool multiple_correct_answers;
-  Map correct_answers;
+  bool multipleCorrectAnswers;
+  Map correctAnswers;
   String? explanation;
   String category;
   String difficulty;
@@ -14,8 +14,8 @@ class Question {
     required this.question,
     required this.description,
     required this.answers,
-    required this.multiple_correct_answers,
-    required this.correct_answers,
+    required this.multipleCorrectAnswers,
+    required this.correctAnswers,
     required this.explanation,
     required this.category,
     required this.difficulty,
@@ -26,8 +26,8 @@ class Question {
         question = json['question'],
         description = json['description'],
         answers = json['answers'],
-        multiple_correct_answers = json['multiple_correct_answers'] == 'true',
-        correct_answers = json['correct_answers'],
+        multipleCorrectAnswers = json['multiple_correct_answers'] == 'true',
+        correctAnswers = json['correct_answers'],
         explanation = json['explanation'],
         category = json['category'],
         difficulty = json['difficulty'];
