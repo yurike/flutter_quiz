@@ -25,7 +25,9 @@ class QuestionsPage extends StatelessWidget {
 
   Widget buildQuestion() {
     return Obx(() {
-      if (controller.questions.isEmpty) {
+      if (controller.networkError.value.isNotEmpty) {
+        return Text(controller.networkError.string);
+      } else if (controller.questions.isEmpty) {
         return const CircularProgressIndicator();
       }
       int qIndex = controller.currentQuestion.value;

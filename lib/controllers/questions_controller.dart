@@ -11,8 +11,9 @@ class QuestionsController extends GetxController {
   final questions = <Question>[].obs;
   final currentQuestion = 0.obs;
   final answers = [].obs;
-  var correctAnswers = 0.obs;
+  final correctAnswers = 0.obs;
   final savedResult = "".obs;
+  final networkError = "".obs;
 
   final CategoryController categoryController = Get.find();
   final DifficultyController difficultyController = Get.find();
@@ -21,7 +22,7 @@ class QuestionsController extends GetxController {
     final question = questions[currentQuestion.value];
     final bool correct =
         question.correctAnswers['${answerKey}_correct'] == 'true';
-    if (correct) correctAnswers++;
+    if (correct) correctAnswers.value++;
     answers.add({
       "question": question.question,
       "answer": question.answers[answerKey],
@@ -56,16 +57,10 @@ class QuestionsController extends GetxController {
         questions.add(Question.fromJson(q));
       }
     } on DioError catch (e) {
-      if (kDebugMode) {
-        if (e.response != null) {
-          print('DioError. responce.data: ${e.response?.data}');
-          print(e.response?.headers);
-          print(e.response?.requestOptions);
-        } else {
-          print(e.requestOptions);
-          print(e.message);
-        }
-      }
+      networkError.value = (e.response != null)
+          ? '${e.response?.data} \n Request options: ${e.response?.requestOptions}'
+          : '${e.message} \n Request options: ${e.requestOptions}';
+      if (kDebugMode) print('DioError: Responce.data: $networkError');
     }
   }
 
