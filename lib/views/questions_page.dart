@@ -60,9 +60,7 @@ class QuestionsPage extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const Divider(height: 10),
-          Column(
-            children: answerTiles,
-          ),
+          for (var answer in answerTiles) answer,
         ],
       );
     });
