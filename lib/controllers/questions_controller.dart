@@ -58,8 +58,8 @@ class QuestionsController extends GetxController {
       }
     } on DioError catch (e) {
       networkError.value = (e.response != null)
-          ? '${e.response?.data} \n Request options: ${e.response?.requestOptions}'
-          : '${e.message} \n Request options: ${e.requestOptions}';
+          ? '${e.response?.data} Code: ${e.response?.statusCode} \n Message: ${e.response?.statusMessage}'
+          : '${e.message}\n\nCheck your internet connection';
       if (kDebugMode) print('DioError: Responce.data: $networkError');
     }
   }
