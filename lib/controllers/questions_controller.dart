@@ -75,7 +75,7 @@ class QuestionsController extends GetxController {
       "incorrect": questions.length - correctAnswers.value,
     };
     db.collection("results").add(result).then((DocumentReference doc) {
-      savedResult.value = "Saved with ID: ${doc.id}";
+      savedResult.value = doc.id;
     });
   }
 }

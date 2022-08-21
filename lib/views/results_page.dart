@@ -44,7 +44,8 @@ class ResultPage extends StatelessWidget {
           case 'saving...':
             return const CircularProgressIndicator();
           default:
-            return Text(questionsController.savedResult.value);
+            return Text(
+                'Saved with ID: ${questionsController.savedResult.value}');
         }
       },
     );
