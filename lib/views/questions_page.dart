@@ -28,7 +28,7 @@ class QuestionsPage extends StatelessWidget {
       if (controller.networkError.value.isNotEmpty) {
         return Text(controller.networkError.string);
       } else if (controller.questions.isEmpty) {
-        return const CircularProgressIndicator();
+        return const CircularProgressIndicator.adaptive();
       }
       int qIndex = controller.currentQuestion.value;
       Question question = controller.questions[qIndex];

@@ -60,7 +60,7 @@ class QuestionsController extends GetxController {
       networkError.value = (e.response != null)
           ? '${e.response?.data} Code: ${e.response?.statusCode} \n Message: ${e.response?.statusMessage}'
           : '${e.message}\n\nCheck your internet connection';
-      if (kDebugMode) print('DioError: Responce.data: $networkError');
+      debugPrint('DioError: Responce.data: $networkError');
     }
   }
 

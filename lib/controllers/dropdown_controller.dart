@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 abstract class DropdownController extends GetxController {
-  final RxnString selected = RxnString();
+  final selected = RxnString();
   final options = [].obs;
 
   ///to get options from server
