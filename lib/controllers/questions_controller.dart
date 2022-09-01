@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_quiz/models/question.dart';
+import 'package:flutter_quiz/services/quiz_service.dart';
 import 'package:get/get.dart';
 
 import 'category_controller.dart';
@@ -14,6 +15,8 @@ class QuestionsController extends GetxController {
   final correctAnswers = 0.obs;
   final savedResult = "".obs;
   final networkError = "".obs;
+
+  final service = Get.put(QuizService());
 
   final CategoryController categoryController = Get.find();
   final DifficultyController difficultyController = Get.find();
@@ -37,32 +40,44 @@ class QuestionsController extends GetxController {
 
   void getQuestions() async {
     try {
-      final Map<String, dynamic> parameters = {
-        'limit': 10,
-        'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
-      };
-      if (categoryController.isSelected()) {
-        parameters["category"] = categoryController.selected.value;
-      }
-      if (categoryController.isSelected()) {
-        parameters["difficulty"] = difficultyController.selected.value;
-      }
-
-      var response = await Dio().get(
-        'https://quizapi.io/api/v1/questions',
-        queryParameters: parameters,
-      );
-      //print(response.data);
-      for (Map<String, dynamic> q in response.data) {
-        questions.add(Question.fromJson(q));
-      }
-    } on DioError catch (e) {
-      networkError.value = (e.response != null)
-          ? '${e.response?.data} Code: ${e.response?.statusCode} \n Message: ${e.response?.statusMessage}'
-          : '${e.message}\n\nCheck your internet connection';
-      debugPrint('DioError: Responce.data: $networkError');
+      service.getQuestions(
+          limit: 10,
+          category: categoryController.selected.value,
+          difficulty: difficultyController.selected.value);
+    } catch (e) {
+      e.printInfo();
     }
   }
+
+  // void getQuestions() async {
+  //   try {
+  //     final Map<String, dynamic> parameters = {
+  //       'limit': 10,
+  //       'apiKey': 'j24WhINsXuMG7PszLmbkLHqRiXRoFnjRZrHxkwDa',
+  //     };
+  //     if (categoryController.isSelected()) {
+  //       parameters["category"] = categoryController.selected.value;
+  //     }
+  //     if (categoryController.isSelected()) {
+  //       parameters["difficulty"] = difficultyController.selected.value;
+  //     }
+
+  //     var response = await Dio().get(
+  //       'https://quizapi.io/api/v1/questions',
+  //       queryParameters: parameters,
+  //     );
+  //     //print(response.data);
+  //     for (Map<String, dynamic> q in response.data) {
+  //       questions.add(Question.fromJson(q));
+  //     }
+  //   } on DioError catch (e) {
+  //     networkError.value = (e.response != null)
+  //         ? '${e.response?.data} Code: ${e.response?.statusCode} \n '
+  //             'Message: ${e.response?.statusMessage}'
+  //         : '${e.message}\n\nCheck your internet connection';
+  //     debugPrint('DioError: Responce.data: $networkError');
+  //   }
+  // }
 
   void saveResults() {
     savedResult.value = 'saving...';
