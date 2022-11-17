@@ -74,8 +74,14 @@ class QuestionsController extends GetxController {
       "correct": correctAnswers.value,
       "incorrect": questions.length - correctAnswers.value,
     };
-    db.collection("results").add(result).then((DocumentReference doc) {
-      savedResult.value = doc.id;
-    });
+    try {
+      db.collection("results").add(result).then((DocumentReference doc) {
+        // TODO: fix handling
+        savedResult.value = doc.id;
+      });
+    } on FirebaseException catch (e) {
+      savedResult.value = "db error";
+      if (kDebugMode) print('dbError: ${e.code} ${e.message}');
+    }
   }
 }

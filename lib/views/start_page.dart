@@ -6,9 +6,8 @@ import 'package:get/get.dart';
 import '../controllers/dropdown_controller.dart';
 
 class StartPage extends StatelessWidget {
-  final CategoryController categoryController = Get.put(CategoryController());
-  final DifficultyController difficultyController =
-      Get.put(DifficultyController());
+  final _categoryController = Get.put(CategoryController());
+  final _difficultyController = Get.put(DifficultyController());
 
   StartPage({Key? key}) : super(key: key);
 
@@ -20,8 +19,8 @@ class StartPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildDropdown("Выберите категорию", categoryController),
-            buildDropdown("Выберите сложность", difficultyController),
+            buildDropdown("Выберите категорию", _categoryController),
+            buildDropdown("Выберите сложность", _difficultyController),
             ElevatedButton(
               onPressed: () => Get.toNamed("/questions"),
               child: const Text("Начать"),

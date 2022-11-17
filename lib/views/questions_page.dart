@@ -32,7 +32,6 @@ class QuestionsPage extends StatelessWidget {
       }
       int qIndex = controller.currentQuestion.value;
       Question question = controller.questions[qIndex];
-
       List<Widget> answerTiles = question.answers.entries.map((answer) {
         if (answer.value != null) {
           return RadioListTile<String>(
