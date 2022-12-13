@@ -81,7 +81,7 @@ class QuestionsController extends GetxController {
       });
     } on FirebaseException catch (e) {
       savedResult.value = "db error";
-      if (kDebugMode) print('dbError: ${e.code} ${e.message}');
+      debugPrint('dbError: ${e.code} ${e.message}');
     }
   }
 }
